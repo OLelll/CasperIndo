@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CásperIndo — Onde sair com a Cásper?</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Outfit:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+:root{--ind:#14006E;--ele:#0A23FF;--cob:#0047AB;--per:#7B9FD0;--bg:#F4F5F9;--card:#fff;--ink:#12122b;--mut:#5d6180;--line:#e3e5ef;--r:18px}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0a24;--card:#16143b;--ink:#f1f2ff;--mut:#a3a7d0;--line:#2a2766}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Outfit,system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+h1,h2,h3{font-family:Unbounded,sans-serif;font-weight:900;margin:0 0 .5em;line-height:1.15;letter-spacing:-.02em}
+h2{font-size:1.15rem}h3{font-size:1rem}
+:focus-visible{outline:3px solid var(--ele);outline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{background:var(--ele);color:#fff;border:0;border-radius:999px;padding:.55em 1.2em;font-weight:600;cursor:pointer;transition:.15s}
+.btn:hover{filter:brightness(1.1)}.btn:disabled{background:var(--line);color:var(--mut);cursor:not-allowed}
+.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}.btn.sm{padding:.3em .9em;font-size:.88rem}
+input,select,textarea{width:100%;padding:.7em .9em;border:1.5px solid var(--line);border-radius:12px;background:var(--card);margin:.25em 0 .9em}
+input:focus,select:focus,textarea:focus{border-color:var(--ele);outline:0;box-shadow:0 0 0 3px #0a23ff30}
+label{font-weight:600;font-size:.88rem}
+.wrap{max-width:980px;margin:auto;padding:1.2rem 1rem 4rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem;margin-bottom:1rem;box-shadow:0 6px 24px -14px #14006e55}
+.card.ret{border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ind);padding:0;overflow:hidden}
+.card.ret>header{background:linear-gradient(90deg,var(--per),#cfdcf2);color:#000;padding:.35rem .9rem;font-weight:700;font-size:.85rem;display:flex;gap:.5rem;align-items:center;border-bottom:2px solid var(--ink)}
+.card.ret>header i{width:11px;height:11px;border-radius:50%;background:var(--ele);border:2px solid #000}
+.card.ret>div{padding:1.1rem}
+nav.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .row{display:flex;align-items:center;gap:.8rem;max-width:980px;margin:auto;padding:.6rem 1rem}
+.logo{font:400 1.6rem 'Permanent Marker',cursive;color:var(--ele);display:flex;gap:.35rem;align-items:center}
+.logo svg{width:30px;height:30px}
+.tabs{display:flex;gap:.3rem;margin-left:auto}
+.tabs button{background:none;border:0;border-radius:999px;padding:.45em 1em;font-weight:600;cursor:pointer;color:var(--mut)}
+.tabs button[aria-selected=true]{background:var(--ele);color:#fff}
+.hb{display:none;margin-left:auto;background:none;border:1.5px solid var(--line);border-radius:12px;font-size:1.3rem;padding:.1em .5em;cursor:pointer}
+@media(max-width:760px){.hb{display:block}.tabs{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg);flex-direction:column;padding:.6rem 1rem;border-bottom:1px solid var(--line)}.tabs.open{display:flex}.tabs button{text-align:left}}
+.hero{background:linear-gradient(135deg,var(--ele),var(--ind));color:#fff;border-radius:28px;padding:2rem 1.4rem;margin-bottom:1.2rem;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(#fff3 1.5px,transparent 2px) 0 0/12px 12px;mask-image:linear-gradient(120deg,transparent 40%,#000);-webkit-mask-image:linear-gradient(120deg,transparent 40%,#000);pointer-events:none}
+.hero h1{font-size:clamp(1.6rem,5.5vw,2.8rem);margin:0 0 1rem;position:relative}
+.pill{display:flex;align-items:center;gap:.6rem;background:#fff;color:#000;border-radius:999px;padding:.2rem 1.1rem;position:relative}
+.pill input{border:0;margin:0;background:none;color:#000;box-shadow:none!important}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));align-items:start}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;background:#0a23ff1a;color:var(--ele);padding:.1em .7em;border-radius:999px;margin:0 .3rem .3rem 0}
+.tag.vol{background:#000;color:#fff}.tag.fec{background:#d9345b22;color:#d9345b}.tag.ok{background:#12a15a22;color:#12a15a}
+.meta{font-size:.88rem;color:var(--mut)}
+.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.acts{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-top:.6rem}
+.bar{display:block;width:100%;height:34px;background:var(--line);border:0;border-radius:10px;position:relative;margin:.35rem 0;cursor:pointer;text-align:left;padding:0;overflow:hidden}
+.bar span{position:absolute;inset:0 auto 0 0;background:#0a23ff55;transition:width .4s}.bar.me span{background:var(--ele)}
+.bar em{position:relative;padding:0 .8rem;font-style:normal;font-weight:600;font-size:.9rem;line-height:34px}
+.sw{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.toast{position:fixed;bottom:calc(1rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.7rem 1.3rem;border-radius:999px;z-index:20;max-width:90vw}
+.avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--ele),var(--ind));color:#fff;display:grid;place-items:center;font:900 1.6rem Unbounded}
+.err{color:#d9345b;font-weight:600;font-size:.9rem}
+.center{max-width:460px;margin:auto}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.av{display:inline-grid;place-items:center;border-radius:50%;color:#fff;font-weight:700;flex:none}
+a.nm{color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--per)}
+.cm{display:flex;gap:.5rem;margin-top:.6rem}.cm input{margin:0}
+.cmt{display:flex;gap:.5rem;margin:.4rem 0 0;align-items:flex-start}
+.x{background:none;border:0;color:var(--mut);cursor:pointer;font-size:1.1rem}
+details{margin-top:.6rem}summary{cursor:pointer}
+</style></head><body>
+<div id="app"></div>
+<script>
+/* ====== CONFIGURE AQUI (Supabase > Project Settings > API) ====== */
+const SUPABASE_URL='https://auyxxkacfvdtbjvvgkpv.supabase.co';
+const SUPABASE_KEY='sb_publishable_M66HVirWYdvEMKX40_DYyQ_U3V8b0zC';
+const DOMINIO=/^[^@\s]+@al\.casperlibero\.edu\.br$/i;
+const CURSOS=['Jornalismo','Publicidade e Propaganda','Rádio, TV e Internet','Relações Públicas'];
+const TABELAS=['profiles','roles','inscricoes','seguidores','comunidades','membros','posts','enquetes','votos','avisos','comentarios','destaques'];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fd=d=>d?d.split('-').reverse().join('/'):'';
+const S={ver:null,me:null,tab:0,menu:0,q:'',feed:'principal',comm:null,ptab:'perfil',form:0,cform:0,mode:'login',msg:'',busy:0,toast:'',D:{}};
+const ready=!SUPABASE_URL.includes('COLE_');
+const sb=ready?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+const D=n=>S.D[n]||[];
+const nome=id=>(D('profiles').find(p=>p.id===id)||{}).nome||'Casperiano';
+const eu=()=>S.me.id;
+const toast=m=>{S.toast=m;render();setTimeout(()=>{S.toast='';render()},2600)};
+async function load(){const r=await Promise.all(TABELAS.map(n=>sb.from(n).select('*')));TABELAS.forEach((n,i)=>S.D[n]=r[i].data||[])}
+async function run(q,ok){const{error}=await q;if(error)return toast(error.message.replace(/^.*(Rolê lotado).*$/,'$1'));await load();render();if(ok)toast(ok)}
+
+const Logo=()=>`<div class="logo"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M33 8A16 16 0 1 0 33 32L26 25A7 7 0 1 1 26 15Z" fill="#0A23FF"/><path d="M37 11L21 29" stroke="var(--bg)" stroke-width="3"/></svg>CasperIndo</div>`;
+const Win=(t,b)=>`<section class="card ret"><header><i></i>${t}</header><div>${b}</div></section>`;
+
+const Setup=()=>`<div class="wrap center"><div class="card"><h2>Falta um passo</h2><p>Abra o <code>index.html</code> e cole a <strong>Project URL</strong> e a <strong>anon key</strong> do seu Supabase nas duas primeiras linhas do script.</p></div></div>`;
+
+const Auth=()=>{const reg=S.mode==='reg';return `<div class="wrap center"><div class="hero"><div class="logo" style="color:#fff">CasperIndo</div><h1>CHEGA de pessoas que não se sentem encaixadas!</h1><p style="position:relative;margin:0">Uma vez Cásper, sempre Cásper.</p></div>
+<div class="card"><div class="sw"><button class="btn sm ${reg?'alt':''}" data-act="mode" data-v="login">Entrar</button><button class="btn sm ${reg?'':'alt'}" data-act="mode" data-v="reg">Criar conta</button></div>
+<form id="auth"><h2>Eaí? Bora conectar?</h2>
+${reg?`<label for="nome">Nome completo</label><input id="nome" autocomplete="name" required><label for="curso">Curso</label><select id="curso">${CURSOS.map(c=>`<option>${c}</option>`).join('')}</select>`:''}
+<label for="email">E-mail institucional</label><input id="email" type="email" placeholder="voce@al.casperlibero.edu.br" autocomplete="email" required>
+<label for="senha">Senha</label><input id="senha" type="password" minlength="6" autocomplete="${reg?'new':'current'}-password" required>
+${reg?`<label><input id="termo" type="checkbox" style="width:auto;margin-right:.4rem" required>Aceito os Termos de Uso e o Aviso de Privacidade (LGPD).</label><br><br>`:''}
+${S.msg?`<p class="err" role="alert">${esc(S.msg)}</p>`:''}
+<button class="btn" ${S.busy?'disabled':''}>${reg?'Criar minha conta':'Entrar'}</button></form></div></div>`};
+
+const Search=()=>`<div class="pill"><span aria-hidden="true">🔍</span><input id="q" type="search" aria-label="Buscar" placeholder="Onde sair com a Cásper?" value="${esc(S.q)}"></div>`;
+
+const Poll=p=>{const v=D('votos').filter(x=>x.enquete_id===p.id),mine=v.find(x=>x.user_id===eu());return `<div style="margin-bottom:1rem"><strong>${esc(p.pergunta)}</strong>${p.opcoes.map((o,i)=>{const n=v.filter(x=>x.opcao===i).length,pc=v.length?Math.round(n/v.length*100):0;return `<button class="bar ${mine&&mine.opcao===i?'me':''}" data-act="votar" data-id="${p.id}" data-i="${i}" ${mine?'disabled':''}><span style="width:${pc}%"></span><em>${esc(o)} · ${pc}%</em></button>`}).join('')}<div class="meta">${v.length} voto(s)${mine?' · valeu pelo voto!':''}</div></div>`};
+
+const meP=()=>D('profiles').find(p=>p.id===eu())||{};
+const sup=()=>!!meP().super;
+const Av=(id,sz=36)=>{const p=D('profiles').find(x=>x.id===id)||{nome:'?'};return `<span class="av" style="width:${sz}px;height:${sz}px;background:${esc(p.cor||'#0A23FF')};font-size:${Math.round(sz*.45)}px" aria-hidden="true">${esc(p.emoji||(p.nome||'?')[0].toUpperCase())}</span>`};
+const Nm=id=>`<a href="#" class="nm" data-act="ver" data-id="${id}">${esc(nome(id))}</a>`;
+const SegBtn=id=>id===eu()?'':`<button class="btn alt sm" data-act="seguir" data-id="${id}">${D('seguidores').some(s=>s.seguidor===eu()&&s.seguido===id)?'Seguindo':'Seguir'}</button>`;
+const Rolê=r=>{const l=D('inscricoes').filter(i=>i.role_id===r.id),ins=l.some(i=>i.user_id===eu()),lot=l.length>=r.limite,mine=r.criador===eu(),cs=D('comentarios').filter(c=>c.role_id===r.id).sort((a,b)=>a.created_at<b.created_at?-1:1);
+return `<article class="card">${r.voluntariado?'<span class="tag vol">Voluntariado</span>':''}<span class="tag ${lot?'fec':'ok'}">${lot?'Lotado':'Vagas'} ${l.length}/${r.limite}</span><h3>${esc(r.titulo)}</h3><p>${esc(r.descricao)}</p>
+<div class="meta">📅 ${fd(r.data)} às ${(r.horario||'').slice(0,5)} · 📍 ${esc(r.local)} · por <strong>${Nm(r.criador)}</strong></div>
+<div class="acts"><button class="btn sm" data-act="alist" data-id="${r.id}" ${lot&&!ins?'disabled':''}>${ins?'Sair da lista':lot?'Lotado':'Alistar-se'}</button>${mine?'':SegBtn(r.criador)}${mine||sup()?`<button class="btn alt sm" data-act="delrole" data-id="${r.id}">Apagar</button>`:''}</div>
+${l.length?`<details><summary class="meta">👥 Quem vai (${l.length})</summary>${l.map(i=>`<div class="acts">${Av(i.user_id,26)}${Nm(i.user_id)}${SegBtn(i.user_id)}</div>`).join('')}</details>`:''}
+${cs.map(c=>`<p class="cmt">${Av(c.user_id,24)}<span><strong>${Nm(c.user_id)}</strong> ${esc(c.texto)}${c.user_id===eu()||sup()?` <button class="x" data-act="delcm" data-id="${c.id}" aria-label="Apagar comentário">×</button>`:''}</span></p>`).join('')}
+<form class="cm" data-id="${r.id}"><input placeholder="Escreva um comentário…" aria-label="Comentário" required maxlength="300"><button class="btn sm">Enviar</button></form></article>`};
+
+const Home=()=>{const q=S.q.toLowerCase(),hit=q?D('roles').filter(r=>(r.titulo+r.local+r.descricao).toLowerCase().includes(q)):[];
+const prox=[...D('roles')].filter(r=>r.data>=new Date().toISOString().slice(0,10)).sort((a,b)=>a.data<b.data?-1:1)[0],ds=[...D('destaques')].sort((a,b)=>a.created_at<b.created_at?1:-1);
+return `<div class="hero"><h1>Onde sair com a Cásper?</h1>${Search()}</div>
+${q?Win('resultados',hit.map(Rolê).join('')||'<p>Nada por aqui ainda. Que tal criar o primeiro rolê? 👀</p>'):''}
+<div class="grid"><div>${Win('⚠ avisos',[...D('avisos')].sort((a,b)=>a.created_at<b.created_at?1:-1).map(a=>`<p><strong>${esc(a.titulo)}</strong><br><span class="meta">${esc(a.texto)}</span></p>`).join('')||'<p class="meta">Sem avisos.</p>')}
+${Win('enquetes',D('enquetes').filter(e=>!e.comunidade_id).map(Poll).join('')||'<p class="meta">Sem enquetes.</p>')}</div>
+<div>${Win('destaques',ds.map(d=>`<p><strong>${esc(d.titulo)}</strong><br><span class="meta">${esc(d.texto)}</span></p>`).join('')||(prox?Rolê(prox).replace('class="card"','style="margin:0"'):'<p>Nenhum rolê marcado ainda. Crie o primeiro!</p>'))}</div></div>`};
+
+const Feed=()=>{const seg=D('seguidores').filter(s=>s.seguidor===eu()).map(s=>s.seguido),l=[...D('roles')].sort((a,b)=>a.created_at<b.created_at?1:-1).filter(r=>S.feed==='principal'||seg.includes(r.criador)||r.criador===eu());
+return `<div class="sw"><button class="btn sm ${S.feed==='principal'?'':'alt'}" data-act="feed" data-v="principal">Feed principal</button><button class="btn sm ${S.feed==='seguindo'?'':'alt'}" data-act="feed" data-v="seguindo">Quem eu sigo</button><button class="btn sm" data-act="novo" style="margin-left:auto">+ Criar rolê</button></div>
+${S.form?Win('novo rolê',`<form id="nr"><label for="t">Título</label><input id="t" required><label for="d">Descrição</label><textarea id="d" required></textarea><label for="dt">Data</label><input id="dt" type="date" required><label for="h">Horário</label><input id="h" type="time" required><label for="l">Local</label><input id="l" required><label for="mx">Limite de pessoas</label><input id="mx" type="number" min="2" max="200" value="10" required><label><input id="vol" type="checkbox" style="width:auto;margin-right:.4rem">É ação de voluntariado</label><br><br><button class="btn">Publicar rolê</button></form>`):''}
+${l.map(Rolê).join('')||'<p>Nada por aqui ainda. Siga alguém no feed principal! 👆</p>'}`};
+
+const MM=c=>D('membros').find(m=>m.comunidade_id===c.id&&m.user_id===eu());
+const CommCard=c=>{const m=MM(c),n=D('membros').filter(x=>x.comunidade_id===c.id&&x.status==='ativo').length;return `<div class="card"><span class="tag ${c.aberta?'':'fec'}">${c.aberta?'Aberta':'Fechada'}</span><h3>${esc(c.nome)}</h3><p class="clamp meta">${esc(c.descricao)}</p><div class="meta">${n} membro(s)</div>
+<div class="acts"><button class="btn sm alt" data-act="abrir" data-id="${c.id}">Ver comunidade</button>${!m?`<button class="btn sm" data-act="entrar" data-id="${c.id}">${c.aberta?'Entrar':'Solicitar entrada'}</button>`:m.status==='pendente'?'<span class="meta">Aguardando aprovação ⏳</span>':'<span class="tag ok">Você está dentro</span>'}</div></div>`};
+
+const CommView=c=>{const m=MM(c),ativo=m&&m.status==='ativo',adm=sup()||(ativo&&m.papel==='admin'),ok=c.aberta||ativo||sup(),mem=D('membros').filter(x=>x.comunidade_id===c.id),
+ po=D('posts').filter(p=>p.comunidade_id===c.id).sort((a,b)=>a.created_at<b.created_at?1:-1),fora=D('profiles').filter(p=>!mem.some(x=>x.user_id===p.id));
+return `<button class="btn alt sm" data-act="voltar">‹ Voltar</button><div style="height:1rem"></div>
+${Win(esc(c.nome),`<span class="tag ${c.aberta?'':'fec'}">${c.aberta?'Aberta':'Fechada'}</span><p>${esc(c.descricao)}</p>${!m?`<button class="btn sm" data-act="entrar" data-id="${c.id}">${c.aberta?'Entrar':'Solicitar entrada'}</button>`:ativo&&m.papel!=='admin'?`<button class="btn alt sm" data-act="sairc" data-id="${c.id}">Sair da comunidade</button>`:''}`)}
+${ok?Win('mural',(ativo?`<form id="rc" class="cm" data-id="${c.id}"><input id="rt" placeholder="Escreva um recado para a comunidade…" aria-label="Recado" maxlength="400" required><button class="btn sm">Postar</button></form>`:'')+(po.map(p=>`<p class="cmt">${Av(p.autor,26)}<span>${p.tipo!=='recado'?`<span class="tag">${p.tipo==='encontro'?'Encontro':'Aviso'}</span>`:''}<strong>${Nm(p.autor)}</strong>${p.tipo!=='recado'?` · ${esc(p.titulo)}`:''}<br>${esc(p.texto)}${p.autor===eu()||adm?` <button class="x" data-act="delpost" data-id="${p.id}" aria-label="Apagar">×</button>`:''}</span></p>`).join('')||'<p class="meta">Nada postado ainda.</p>')+D('enquetes').filter(e=>e.comunidade_id===c.id).map(Poll).join('')):Win('conteúdo privado','<p>Solicite entrada e aguarde um admin aceitar. 🔒</p>')}
+${ok?Win('membros',mem.filter(x=>x.status==='ativo').map(x=>`<div class="acts">${Av(x.user_id,28)}${Nm(x.user_id)}${x.papel==='admin'?'<span class="tag">Admin</span>':''}${SegBtn(x.user_id)}</div>`).join('')||'<p class="meta">Ninguém ainda.</p>'):''}
+${adm?Win('painel do admin',`<h3>Solicitações</h3>${mem.filter(x=>x.status==='pendente').map(x=>`<div class="acts">${Nm(x.user_id)}<button class="btn sm" data-act="aceitar" data-id="${c.id}" data-u="${x.user_id}">Aceitar</button><button class="btn alt sm" data-act="remover" data-id="${c.id}" data-u="${x.user_id}">Recusar</button></div>`).join('')||'<p class="meta">Nenhuma pendente.</p>'}
+<h3 style="margin-top:1rem">Gerenciar membros</h3>${mem.filter(x=>x.status==='ativo').map(x=>`<div class="acts">${esc(nome(x.user_id))}<button class="btn alt sm" data-act="promover" data-id="${c.id}" data-u="${x.user_id}" data-p="${x.papel==='admin'?'membro':'admin'}">${x.papel==='admin'?'Tirar admin':'Tornar admin'}</button><button class="btn alt sm" data-act="remover" data-id="${c.id}" data-u="${x.user_id}">Remover</button></div>`).join('')}
+<form id="am" data-id="${c.id}"><label for="au">Adicionar pessoa</label><select id="au">${fora.map(p=>`<option value="${p.id}">${esc(p.nome)}</option>`).join('')}</select><select id="ap" aria-label="Papel"><option value="membro">Membro</option><option value="admin">Admin</option></select><button class="btn sm">Adicionar</button></form>
+<h3>Publicar</h3><form id="pp" data-id="${c.id}"><select id="pk" aria-label="Tipo"><option value="aviso">Aviso</option><option value="encontro">Encontro</option></select><input id="pt" placeholder="Título (encontro: data, hora e local)" required><input id="pd" placeholder="Informações" required><button class="btn sm">Publicar</button></form>
+<form id="pe" data-id="${c.id}"><input id="eq" placeholder="Pergunta da enquete" required><input id="eo" placeholder="Opções separadas por vírgula" required><button class="btn sm">Criar enquete</button></form>
+<h3>Editar comunidade</h3><form id="ec" data-id="${c.id}"><input id="en" value="${esc(c.nome)}" aria-label="Nome" required><textarea id="ed" aria-label="Descrição" required>${esc(c.descricao)}</textarea><select id="ea" aria-label="Tipo"><option value="1" ${c.aberta?'selected':''}>Aberta</option><option value="0" ${c.aberta?'':'selected'}>Fechada</option></select><button class="btn sm">Salvar</button> <button type="button" class="btn alt sm" data-act="delcom" data-id="${c.id}">Excluir comunidade</button></form>`):''}`};
+
+const Comms=()=>{if(S.comm)return CommView(D('comunidades').find(c=>c.id===S.comm));const l=D('comunidades').filter(c=>!S.q||c.nome.toLowerCase().includes(S.q.toLowerCase()));
+return `<div class="sw"><button class="btn sm" data-act="ncomm">+ Criar comunidade</button></div>
+${S.cform?Win('nova comunidade',`<form id="nc"><label for="cn">Nome</label><input id="cn" required><label for="cd">Descrição</label><textarea id="cd" required></textarea><label for="ca">Tipo</label><select id="ca"><option value="1">Aberta (entra com um clique)</option><option value="0">Fechada (admin aprova)</option></select><button class="btn sm">Criar e virar admin</button></form>`):''}
+<div class="grid">${l.map(CommCard).join('')||'<p>Nenhuma comunidade.</p>'}</div>`};
+
+const Pf=id=>{const p=D('profiles').find(x=>x.id===id)||{},segs=D('seguidores');return `<div class="acts">${Av(id,76)}<div><h2 style="margin:0">${esc(p.nome)} ${p.super?'<span class="tag">Admin</span>':''}</h2><div class="meta">${esc(p.curso)}${p.pronomes?' · '+esc(p.pronomes):''}</div>${p.instagram?`<div class="meta">📷 @${esc(p.instagram.replace(/^@/,''))}</div>`:''}</div></div>${p.bio?`<p>${esc(p.bio)}</p>`:''}${p.interesses?`<p>${p.interesses.split(',').filter(x=>x.trim()).map(i=>`<span class="tag">${esc(i.trim())}</span>`).join('')}</p>`:''}<p class="meta"><strong>${segs.filter(x=>x.seguido===id).length}</strong> seguidores · <strong>${segs.filter(x=>x.seguidor===id).length}</strong> seguindo</p>${SegBtn(id)}`};
+const Ver=id=>`<button class="btn alt sm" data-act="fechaver">‹ Voltar</button><div style="height:1rem"></div>${Win(esc(nome(id)),Pf(id))}${Win('rolês criados',D('roles').filter(r=>r.criador===id).map(Rolê).join('')||'<p class="meta">Nenhum rolê ainda.</p>')}`;
+const Perfil=()=>{const p=meP(),meus=D('roles').filter(r=>r.criador===eu());
+return `<div class="sw"><button class="btn sm ${S.ptab==='perfil'?'':'alt'}" data-act="ptab" data-v="perfil">Perfil</button><button class="btn sm ${S.ptab==='fb'?'':'alt'}" data-act="ptab" data-v="fb">Feedback</button><button class="btn alt sm" data-act="sair" style="margin-left:auto">Sair</button></div>
+${S.ptab==='perfil'?Win('meu perfil',Pf(eu())+`<p class="meta">${esc(S.me.email)}</p>`)+Win('personalizar perfil',`<form id="pf"><label for="pfn">Nome</label><input id="pfn" value="${esc(p.nome)}" required><label for="pfc">Curso</label><select id="pfc">${CURSOS.map(c=>`<option ${c===p.curso?'selected':''}>${c}</option>`).join('')}</select><label for="pfb">Bio</label><textarea id="pfb" maxlength="200">${esc(p.bio)}</textarea><label for="pfe">Emoji do avatar (ex.: 🎤)</label><input id="pfe" maxlength="4" value="${esc(p.emoji)}"><label for="pfcor">Cor do avatar</label><input id="pfcor" type="color" value="${esc(p.cor||'#0A23FF')}"><label for="pfpr">Pronomes</label><input id="pfpr" maxlength="30" value="${esc(p.pronomes)}" placeholder="ela/dela, ele/dele…"><label for="pfig">Instagram</label><input id="pfig" maxlength="40" value="${esc(p.instagram)}" placeholder="@seuuser"><label for="pfin">Interesses (separados por vírgula)</label><input id="pfin" maxlength="120" value="${esc(p.interesses)}" placeholder="samba, cinema, futebol"><button class="btn">Salvar perfil</button></form>`)+Win('meus rolês',meus.map(Rolê).join('')||'<p class="meta">Nenhum ainda.</p>')+Win('minhas comunidades',`<p>${D('membros').filter(m=>m.user_id===eu()&&m.status==='ativo').map(m=>esc((D('comunidades').find(c=>c.id===m.comunidade_id)||{}).nome)).join(', ')||'<span class="meta">Nenhuma ainda.</span>'}</p>`)
+:Win('feedback',`<form id="fb"><label for="cat">Categoria</label><select id="cat"><option>Opinião</option><option>Sugestão</option><option>Reclamação</option></select><label for="msg">Sua mensagem</label><textarea id="msg" rows="4" required></textarea><button class="btn">Enviar feedback</button></form>`)}`};
+const AdmTab=()=>{const lst=(n,k)=>[...D(n)].sort((a,b)=>a.created_at<b.created_at?1:-1).map(x=>`<div class="acts"><span>${esc(x[k])}</span><button class="btn alt sm" data-act="deladm" data-t="${n}" data-id="${x.id}">Apagar</button></div>`).join('')||'<p class="meta">Vazio.</p>';
+const frm=n=>`<form id="ad" data-t="${n}"><input class="at" aria-label="Título" placeholder="Título" required><input class="ax" aria-label="Texto" placeholder="Texto" required><button class="btn sm">Publicar</button></form>`;
+return Win('avisos',frm('avisos')+lst('avisos','titulo'))+Win('destaques',frm('destaques')+lst('destaques','titulo'))+Win('enquetes da página principal',`<form id="ae"><input id="aq" aria-label="Pergunta" placeholder="Pergunta" required><input id="ao" aria-label="Opções" placeholder="Opções separadas por vírgula" required><button class="btn sm">Criar enquete</button></form>`+D('enquetes').filter(e=>!e.comunidade_id).map(e=>`<div class="acts"><span>${esc(e.pergunta)}</span><button class="btn alt sm" data-act="deladm" data-t="enquetes" data-id="${e.id}">Apagar</button></div>`).join(''))+Win('comunidades','<p class="meta">Abra qualquer comunidade na aba Comunidades: como admin geral você vê o painel em todas (adicionar e tirar gente, tornar admin, editar e excluir).</p>')};
+
+const TABS=()=>['Principal','Feed e Rolês','Comunidades','Perfil e Feedback',...(sup()?['Admin']:[])];
+function render(){const a=document.getElementById('app');
+ if(!ready){a.innerHTML=Setup();return}
+ const T=S.toast?`<div class="toast" role="status">${esc(S.toast)}</div>`:'';
+ if(!S.me){a.innerHTML=Auth()+T;return}
+ const id=document.activeElement.id,pos=document.activeElement.selectionStart;
+ a.innerHTML=`<nav class="top"><div class="row">${Logo()}<button class="hb" data-act="menu" aria-label="Menu" aria-expanded="${!!S.menu}">☰</button><div class="tabs ${S.menu?'open':''}" role="tablist">${TABS().map((n,i)=>`<button role="tab" aria-selected="${S.tab===i}" data-act="tab" data-i="${i}">${n}</button>`).join('')}</div></div></nav><main class="wrap">${S.ver?Ver(S.ver):[Home,Feed,Comms,Perfil,AdmTab][S.tab]()}</main>${T}`;
+ if(id==='q'){const n=document.getElementById('q');n.focus();n.setSelectionRange(pos,pos)}}
+
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.tagName==='A')e.preventDefault();const a=b.dataset.act,id=b.dataset.id,u=b.dataset.u,me=ready&&S.me&&eu();
+ if(a==='mode'){S.mode=b.dataset.v;S.msg=''}
+ else if(a==='tab'){S.tab=+b.dataset.i;S.menu=0;S.comm=null;S.ver=null;S.q=''}
+ else if(a==='menu')S.menu=!S.menu;
+ else if(a==='feed')S.feed=b.dataset.v;
+ else if(a==='novo')S.form=!S.form;
+ else if(a==='ncomm')S.cform=!S.cform;
+ else if(a==='abrir')S.comm=id;
+ else if(a==='voltar')S.comm=null;
+ else if(a==='ver'){S.ver=id;S.menu=0;scrollTo(0,0)}
+ else if(a==='fechaver')S.ver=null;
+ else if(a==='ptab')S.ptab=b.dataset.v;
+ else if(a==='sair'){await sb.auth.signOut();S.me=null}
+ else{ // ações no banco
+  if(a==='delcm')return run(sb.from('comentarios').delete().eq('id',id));
+  if(a==='delpost')return run(sb.from('posts').delete().eq('id',id));
+  if(a==='deladm'&&['avisos','destaques','enquetes'].includes(b.dataset.t))return run(sb.from(b.dataset.t).delete().eq('id',id),'Apagado');
+  if(a==='promover')return run(sb.from('membros').update({papel:b.dataset.p}).match({comunidade_id:id,user_id:u}),'Atualizado!');
+  if(a==='delcom'){if(!confirm('Excluir esta comunidade e tudo dentro dela?'))return;S.comm=null;return run(sb.from('comunidades').delete().eq('id',id),'Comunidade excluída')}
+  if(a==='votar')return run(sb.from('votos').insert({enquete_id:id,opcao:+b.dataset.i}));
+  if(a==='alist'){const ins=D('inscricoes').some(i=>i.role_id===id&&i.user_id===me);return run(ins?sb.from('inscricoes').delete().match({role_id:id,user_id:me}):sb.from('inscricoes').insert({role_id:id}),ins?'Você saiu da lista':'Você está na lista! 🎉')}
+  if(a==='delrole')return run(sb.from('roles').delete().eq('id',id),'Rolê apagado');
+  if(a==='seguir'){const s=D('seguidores').some(x=>x.seguidor===me&&x.seguido===id);return run(s?sb.from('seguidores').delete().match({seguidor:me,seguido:id}):sb.from('seguidores').insert({seguido:id}))}
+  if(a==='entrar'){const c=D('comunidades').find(c=>c.id===id);return run(sb.from('membros').insert({comunidade_id:id,status:c.aberta?'ativo':'pendente'}),c.aberta?'Você entrou! 🎉':'Pedido enviado. Agora é esperar o admin.')}
+  if(a==='sairc')return run(sb.from('membros').delete().match({comunidade_id:id,user_id:me}),'Você saiu da comunidade');
+  if(a==='aceitar')return run(sb.from('membros').update({status:'ativo'}).match({comunidade_id:id,user_id:u}),'Aceito!');
+  if(a==='remover')return run(sb.from('membros').delete().match({comunidade_id:id,user_id:u}));
+ }
+ render()});
+document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value;render()}});
+document.addEventListener('submit',async e=>{e.preventDefault();const f=e.target,v=i=>f.querySelector('#'+i);
+ if(f.id==='auth'){const email=v('email').value.trim(),senha=v('senha').value,reg=S.mode==='reg';S.msg='';
+  if(!DOMINIO.test(email)){S.msg='Use seu e-mail @al.casperlibero.edu.br.';return render()}
+  S.busy=1;render();
+  const r=reg?await sb.auth.signUp({email,password:senha,options:{emailRedirectTo:location.href.split('#')[0],data:{nome:v('nome').value.trim(),curso:v('curso').value}}}):await sb.auth.signInWithPassword({email,password:senha});
+  S.busy=0;
+  if(r.error)S.msg=/Database error/.test(r.error.message)?'Só e-mails @al.casperlibero.edu.br.':/Email not confirmed/i.test(r.error.message)?'Confirme seu e-mail pelo link que enviamos.':/Invalid login/i.test(r.error.message)?'E-mail ou senha incorretos.':r.error.message;
+  else if(reg&&!r.data.session){S.msg='Quase lá! Enviamos um link de confirmação para o seu e-mail. Clique nele e depois entre aqui.';S.mode='login'}
+  else if(r.data.session)return entrar(r.data.session);
+  return render()}
+ if(f.classList.contains('cm')&&f.id!=='rc')return run(sb.from('comentarios').insert({role_id:f.dataset.id,texto:f.querySelector('input').value}));
+ if(f.id==='rc')return run(sb.from('posts').insert({comunidade_id:f.dataset.id,tipo:'recado',titulo:'recado',texto:v('rt').value}));
+ if(f.id==='pf')return run(sb.from('profiles').update({nome:v('pfn').value.trim(),curso:v('pfc').value,bio:v('pfb').value,emoji:v('pfe').value.trim(),cor:v('pfcor').value,pronomes:v('pfpr').value.trim(),instagram:v('pfig').value.trim(),interesses:v('pfin').value}).eq('id',eu()),'Perfil salvo!');
+ if(f.id==='ad'&&['avisos','destaques'].includes(f.dataset.t))return run(sb.from(f.dataset.t).insert({titulo:f.querySelector('.at').value,texto:f.querySelector('.ax').value}),'Publicado!');
+ if(f.id==='ae')return run(sb.from('enquetes').insert({pergunta:v('aq').value,opcoes:v('ao').value.split(',').map(x=>x.trim()).filter(Boolean)}),'Enquete criada!');
+ if(f.id==='ec')return run(sb.from('comunidades').update({nome:v('en').value,descricao:v('ed').value,aberta:v('ea').value==='1'}).eq('id',f.dataset.id),'Comunidade atualizada!');
+ if(f.id==='am'&&v('au').value)return run(sb.from('membros').insert({comunidade_id:f.dataset.id,user_id:v('au').value,papel:v('ap').value,status:'ativo'}),'Pessoa adicionada!');
+ if(f.id==='nr')S.form=0;return run(sb.from('roles').insert({titulo:v('t').value,descricao:v('d').value,data:v('dt').value,horario:v('h').value,local:v('l').value,limite:+v('mx').value,voluntariado:v('vol').checked}),'Rolê publicado!');
+ if(f.id==='nc'){S.cform=0;return run(sb.from('comunidades').insert({nome:v('cn').value,descricao:v('cd').value,aberta:v('ca').value==='1'}),'Comunidade criada. Você é o admin!')}
+ if(f.id==='pp')return run(sb.from('posts').insert({comunidade_id:f.dataset.id,tipo:v('pk').value,titulo:v('pt').value,texto:v('pd').value}),'Publicado!');
+ if(f.id==='pe')return run(sb.from('enquetes').insert({comunidade_id:f.dataset.id,pergunta:v('eq').value,opcoes:v('eo').value.split(',').map(x=>x.trim()).filter(Boolean)}),'Enquete criada!');
+ if(f.id==='bio')return run(sb.from('profiles').update({bio:v('b').value}).eq('id',eu()),'Bio salva!');
+ if(f.id==='fb'){const{error}=await sb.from('feedback').insert({categoria:v('cat').value,mensagem:v('msg').value});f.reset();return toast(error?error.message:'Feedback enviado. Valeu!')}});
+
+async function entrar(session){if(!session)return render();S.me=session.user;try{await load()}catch(e){S.toast='Erro ao carregar dados';}render()}
+if(ready){sb.auth.getSession().then(({data})=>entrar(data.session));sb.auth.onAuthStateChange((ev,s)=>{if(ev==='SIGNED_IN'&&!S.me)setTimeout(()=>entrar(s),0);if(ev==='SIGNED_OUT'){S.me=null;render()}})}else render();
+setInterval(async()=>{if(!S.me||document.hidden)return;const a=document.activeElement;if((a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))||document.querySelector('details[open]'))return;await load();render()},15000);
+</script></body></html>
